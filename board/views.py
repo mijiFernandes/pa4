@@ -1,5 +1,7 @@
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
-from board.models import Post
+from django.shortcuts import get_object_or_404
+from board.froms import CommentForm
+from board.models import Post, Comment
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -18,6 +20,49 @@ class PostLV(ListView):
 #--- DetailView
 class PostDV(DetailView):
     model = Post
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        slug = self.kwargs["slug"]
+
+        form = CommentForm()
+        post = get_object_or_404(Post, slug=slug)
+        comments = post.comment_set.all()
+
+        context['post'] = post
+        context['comments'] = comments
+        context['form'] = form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        self.object = self.get_object()
+        context = super().get_context_data(**kwargs)
+
+        post = Post.objects.filter(slug=self.kwargs['slug'])[0]
+        comments = post.comment_set.all()
+
+        context['post'] = post
+        context['comments'] = comments
+        context['form'] = form
+
+        if form.is_valid():
+            content = form.cleaned_data['content']
+
+            comment = Comment.objects.create(
+                name=request.user, content=content, post=post
+            )
+
+            form = CommentForm()
+            context['form'] = form
+            try:
+                points = settings.POINTS_SETTINGS['CREATE_ARTICLE']
+            except KeyError:
+                points = 0
+            request.user.modify_points(points)
+            return self.render_to_response(context=context)
+
+        return self.render_to_response(context=context)
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):

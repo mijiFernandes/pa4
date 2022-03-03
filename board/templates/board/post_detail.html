@@ -13,9 +13,10 @@
 {% endblock extra-style %}
 
 {% block content %}
-<div class="post-body">
+<div class="post-body" align="left">
 
     <h2>{{ object.title }}</h2>
+
     <p>
         {% if object.get_previous %}
         <a href="{{ object.get_previous.get_absolute_url }}" title="View previous post">
@@ -30,20 +31,51 @@
         {% endif %}
     </p>
 
-    <div style="font-size:1.5em"><img style="border-radius:5px; -moz-border-radius: 5px;
-                    -khtml-border-radius:5px;
-                    -webkit-border-radius:5px;" src="{{ post.owner.profile.avatar.url }} " width="20" height="20"/>&emsp;{% firstof post.owner %}</div>
-    <br>
+    <h3>{{ object.description }}</h3>
+    <br><br>
     <p>{{ object.modify_dt|date:"j F Y" }}</p>
     <br>
-
-    <div>
-        {{ object.content|linebreaks }}
+    <br>
+ <!-- List of comments -->
+    {% if comments %}
+    <div class="row mt-5">
+        <div>
+            Comment{{ comments.count|pluralize }}
+            <span class="badge badge-dark ml-2">{{ comments.count }}</span>
+        </div>
+        {% for comment in comments %}
+        <div>
+            <div class="card p-2">
+                <div class="row">
+                    <div class="col-12">
+                        <strong style="color:brown">{{ comment.name.username }}</strong>
+                    </div>
+                    <div class="col-12">
+                        <p class="m-1 mt-3">{{ comment.content }}</p>
+                        <p class="text-right text-muted"><small>{{ comment.created }}</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
+    {% endif %}
 
-    <br>
-
-    <br>
+    <!-- Form to leave comment -->
+    {% if user.is_active %}
+    <div class="row mt-5">
+        <div>
+             <h3>Leave a comment</h3>
+            <form method='POST'>
+            {% csrf_token %}
+            <div class="form-group">
+                <span class="ml-2"></span>{{ form.content.label_tag }}
+                <textarea class="form-control {% if form.content.errors %}is-invalid{% endif %}" id="id_content" name="content" rows="4">{{ form.content.value|default:'' }}</textarea>
+            </div>
+            <button class="btn btn-primary ml-2" type="submit">Reply</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
-
