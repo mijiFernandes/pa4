@@ -16,9 +16,9 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
     <span class="navbar-brand mx-1 mb-0 font-weight-bold font-italic" style="font-size:1em">PA4</span>
-    <span class="nav-item mx-0 btn btn-primary"><a class="nav-link text-white" style="font-size:1em" href="{% url 'home' %}">Home</a></span>
-    <span class="nav-item mx-0 btn btn-primary"><a class="nav-link text-white" style="font-size:1em" href="{% url 'board:index' %}">Board</a></span>
-    <span class="nav-item dropdown mx-0 btn btn-primary" style="float:right">
+    <span class="nav-item mx-0 mb-0 btn btn-primary"><a class="nav-link text-white" style="font-size:1em" href="{% url 'home' %}">Home</a></span>
+    <span class="nav-item mx-0 mb-0 btn btn-primary"><a class="nav-link text-white" style="font-size:1em" href="{% url 'board:index' %}">Board</a></span>
+    <span class="nav-item dropdown mx-0 mb-0 btn btn-primary" style="float:right">
         {% if user.is_active %}
         <a class="nav-link dropdown-toggle" style="font-size:1em; color: white;"  href="#" data-bs-toggle="dropdown">
             <img style="border-radius:5px; -moz-border-radius: 5px;
