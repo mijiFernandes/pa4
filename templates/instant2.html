@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}instant2.html{% endblock %}
+
+{% block extra-style %}
+<style type="text/css">
+    body {
+      margin: 0;
+    }
+
+    .container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      box-shadow: inset 0 0 1000px 0 #333;
+    }
+
+    button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      display: block;
+      height: 20%;
+      width: 50%;
+      margin: auto;
+      padding: 0;
+      font: 300 2em/1em "Quicksand", sans-serif;
+      border: 0;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      word-spacing: 5px;
+      border-radius: 10em;
+      text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+      outline: none;
+    }
+    button.click {
+      -webkit-animation: color 900ms linear;
+              animation: color 900ms linear;
+    }
+
+    @-webkit-keyframes color {
+      0%, 20%, 35%, 55% {
+        color: #19569A;
+      }
+      10%, 30%, 40%, 70% {
+        color: white;
+      }
+    }
+
+    @keyframes color {
+      0%, 20%, 35%, 55% {
+        color: #19569A;
+      }
+      10%, 30%, 40%, 70% {
+        color: white;
+      }
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <button><a href="javascript:setTimeout(()=>{window.location = 'http://127.0.0.1:8000/' },500);">Button</a></button>
+</div>
+
+{% endblock content %}
+{% block extra-script %}
+    <script>
+        Button = (function() {
+
+          var scene,
+              camera,
+              renderer,
+              button,
+              theButtonThe;
+
+          function makeAScene() {
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({
+              antialias: true,
+              transparent: true,
+              alpha: true
+            });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            var container = document.querySelector('.container');
+
+            container.appendChild( renderer.domElement );
+
+            var buttonOuterGeometry = new THREE.TorusGeometry(5, .5, 25, 50),
+                buttonMaterial = new THREE.MeshPhongMaterial({
+                  color: 0xec6115,
+                  emissive: 0xbd411e,
+                  shininess: 60
+                }),
+                extrudeSettings = {
+                  amount: 0.485,
+                  bevelEnabled: false
+                };
+
+            button = new THREE.Mesh(buttonOuterGeometry, buttonMaterial);
+
+            var buttonInnerShape = new THREE.Shape();
+                buttonInnerShape.moveTo( 5, 0 );
+                buttonInnerShape.absarc( 0, 0, 5, 0, Math.PI*2, false ),
+                holePath1 = new THREE.Path(),
+                holePath2 = new THREE.Path(),
+                holePath3 = new THREE.Path(),
+                holePath4 = new THREE.Path();
+
+            holePath1.moveTo(-1, 1.5);
+            holePath1.absarc(-1.53, 1.5, .5, 0, Math.PI*2, true );
+            buttonInnerShape.holes.push(holePath1);
+
+            holePath2.moveTo(-2, 1.5);
+            holePath2.absarc(-1.5, -1.5, .5, 0, Math.PI*2, true );
+            buttonInnerShape.holes.push( holePath2 );
+
+             holePath3.moveTo(2, -1.5);
+            holePath3.absarc(1.5, -1.5, .5, 0, Math.PI*2, true );
+            buttonInnerShape.holes.push( holePath3 );
+
+            holePath4.moveTo(2, 1.5);
+            holePath4.absarc(1.5, 1.5, .5, 0, Math.PI*2, true );
+            buttonInnerShape.holes.push( holePath4 );
+
+            var buttonInnerGeometry = new THREE.ExtrudeGeometry(buttonInnerShape, extrudeSettings),
+                buttonInner = new THREE.Mesh(buttonInnerGeometry, buttonMaterial);
+
+            button.add(buttonInner);
+
+            button.rotation.set(Math.PI/2, 0, 0);
+
+            scene.add(button);
+
+            var light = new THREE.DirectionalLight( 0xffffff, 1 );
+
+            light.position.set(0, 1, 0);
+            scene.add( light );
+
+            var cameraZPosition = window.innerHeight < 500 ? 10 : 17;
+
+            camera.position.set(0, 0, cameraZPosition);
+
+            render();
+          }
+
+          function update() {
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            var cameraZPosition = window.innerHeight < 500 ? 10 : 17;
+
+            camera.position.set(0, 0, cameraZPosition);
+          }
+
+          function render() {
+            requestAnimationFrame( render );
+            renderer.render(scene, camera);
+          };
+
+          function itsAButton() {
+
+            this.className += ' click';
+            theButtonThe.removeEventListener('mousedown', itsAButton);
+
+            var click = new Audio('https://s3-us-west-2.amazonaws.com/s.cdpn.io/17575/click.mp3');
+
+            click.volume = .3;
+            click.preload = true;
+            click.play();
+
+            var flip = new Audio('https://s3-us-west-2.amazonaws.com/s.cdpn.io/17575/whoosh.mp3');
+
+            flip.volume = .75;
+            flip.preload = true;
+            flip.play();
+
+
+
+            var currentRotation = button.rotation.x;
+            TweenMax.to(button.rotation, 8, {x: currentRotation + (Math.PI*2), ease: Power2.easeInOut, onComplete:function(){
+              theButtonThe.removeAttribute('class');
+              theButtonThe.addEventListener('mousedown', itsAButton);
+            }});
+          }
+
+          function init() {
+
+            theButtonThe = document.getElementsByTagName('button')[0];
+
+            theButtonThe.addEventListener('mousedown', itsAButton);
+
+            window.addEventListener('resize', update);
+
+            makeAScene();
+          }
+
+          document.addEventListener("DOMContentLoaded", init);
+
+        })();
+    </script>
+{% endblock %}

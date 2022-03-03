@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block extra-style %}
+<style type="text/css">
+    a { text-decoration:none }
+    .title {
+    display: table-cell;
+    vertical-align: middle;
+}
+</style>
+{% endblock %}
+{% block title %}post_all.html{% endblock %}
+{% block content %}
+
+    <h1>Board List</h1>&emsp;
+    <br>
+
+    {% for post in posts %}
+        <h3><a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>&emsp;
+        <div style="float:right"><img style="border-radius:5px; -moz-border-radius: 5px;
+                    -khtml-border-radius:5px;
+                    -webkit-border-radius:5px;" src="{{ post.owner.profile.avatar.url }} " width="25" height="25"/>{% firstof post.owner %}</div></h3>
+        {{ post.modify_date|date:"N d, Y" }}
+    {% endfor %}
+
+    <br>
+    <div style="float:left">
+        <span>
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">PreviousPage</a>
+            {% endif %}
+
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">NextPage</a>
+            {% endif %}
+        </span>&emsp;&emsp;
+    </div>
+    <div class="title">
+            <li class="nav-item mx-2 btn btn-primary">
+                  <a class="text-white" href="{% url 'board:add' %}">Add</a>
+            </li>
+    </div>
+
+{% endblock %}
