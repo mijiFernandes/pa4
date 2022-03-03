@@ -6,6 +6,8 @@ from django.urls import reverse
 from account.models import User
 from django.utils.text import slugify
 
+from mysite import settings
+
 
 class Post(models.Model):
     title = models.CharField(verbose_name='TITLE', max_length=50)
@@ -36,7 +38,12 @@ class Post(models.Model):
 
     def save(self, *arg, **kwargs):
         self.slug = slugify(self.title, allow_unicode=True)
-        super().save(*arg, **kwargs)
+        try:
+            points = settings.POINTS_SETTINGS['CREATE_ARTICLE']
+        except KeyError:
+            points = 0
+        User.objects.get(username=self.owner.username).modify_points(points)
+        super(Post, self).save(*arg, **kwargs)
 
 
 class Comment(models.Model):
