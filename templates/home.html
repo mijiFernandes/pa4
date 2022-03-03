@@ -70,6 +70,41 @@
 
 {% endblock %}
 
+{% block content %}
+    <div id="img" class="home-image">
+        <h2 class="title">Home</h2>
+    </div>
+
+    <hr style="margin: 10px 0;">
+    <div class="box1" style="height:60px;">
+        <div class="box2" style="width:20%;">
+            <a type="button" id="button1" data-animation="ripple" style="overflow: hidden; position: relative;" onClick="action();">1</a>
+        </div>
+        <div class="box2" style="width:20%;">
+            <a type="button" id="button2" data-animation="ripple" style="overflow: hidden; position: relative;" onClick="change();">2</a>
+        </div>
+        <div class="box2" style="width:20%;">
+            <a type="button" id="button3" data-animation="ripple" style="overflow: hidden; position: relative;" onclick="img();">3</a>
+        </div>
+    </div>
+
+<!--지연-->
+<!--    href="javascript:setTimeout(()=>{window.location = 'instant2' },500);"-->
+
+    <br>
+    <hr style="margin: 10px 0;">
+
+    <div class="row text-center">
+        <div class="col-sm-6">
+            <h3>Board function</h3>
+            <p>You can write posts.</p>
+        </div>
+        <div class="col-sm-6">
+            <h3>Profile function</h3>
+            <p>You can make your own profile.</p>
+        </div>
+    </div>
+    <hr style="margin: 10px 0;">
 {% block extra-script %}
     <script>
         window["tmripple"] =
@@ -483,42 +518,5 @@
             })();
     </script>
 {% endblock %}
-
-{% block content %}
-    <div id="img" class="home-image">
-        <h2 class="title">Home</h2>
-    </div>
-
-    <hr style="margin: 10px 0;">
-    <div class="box1" style="height:60px;">
-        <div class="box2" style="width:20%;">
-            <a type="button" id="button1" data-animation="ripple" style="overflow: hidden; position: relative;" onClick="action();">1</a>
-        </div>
-        <div class="box2" style="width:20%;">
-            <a type="button" id="button2" data-animation="ripple" style="overflow: hidden; position: relative;" onClick="change();">2</a>
-        </div>
-        <div class="box2" style="width:20%;">
-            <a type="button" id="button3" data-animation="ripple" style="overflow: hidden; position: relative;" onclick="img();">3</a>
-        </div>
-    </div>
-
-<!--지연-->
-<!--    href="javascript:setTimeout(()=>{window.location = 'instant2' },500);"-->
-
-    <br>
-    <hr style="margin: 10px 0;">
-
-    <div class="row text-center">
-        <div class="col-sm-6">
-            <h3>Board function</h3>
-            <p>You can write posts.</p>
-        </div>
-        <div class="col-sm-6">
-            <h3>Profile function</h3>
-            <p>You can make your own profile.</p>
-        </div>
-    </div>
-    <hr style="margin: 10px 0;">
-
 
 {% endblock content %}
