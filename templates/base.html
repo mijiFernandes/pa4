@@ -15,30 +15,36 @@
 <body id="thediv" style="padding-top:90px;">
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-  <span class="navbar-brand mx-1 mb-0 font-weight-bold font-italic" style="font-size:1.2em">PA4</span>
-    
-        <span class="nav-item mx-0 btn btn-primary"><a class="nav-link text-white" style="font-size:1.2em" href="{% url 'home' %}">Home</a></span>
-        <span class="nav-item mx-0 btn btn-primary"><a class="nav-link text-white" style="font-size:1.2em" href="{% url 'board:index' %}">Board</a></span>
-        <span class="nav-item dropdown mx-1 btn btn-primary" style="float:right">
-            {% if user.is_active %}
-            <a class="nav-link dropdown-toggle" style="font-size:1.2em; color: white;"  href="#" data-bs-toggle="dropdown">
-                <img style="border-radius:5px; -moz-border-radius: 5px;
-                    -khtml-border-radius:5px;
-                    -webkit-border-radius:5px;" src="{{ user.profile.avatar.url }} " width="15" height="15"/>&ensp;{% firstof user.username %}&ensp;{{ user.points }}&ensp;</a>
-            <div class="dropdown-menu">
-                <span><a class="dropdown-item" href="{% url 'users-profile' %}">My Page</a></span>
-                <span><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></span>
-                <span><a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a></span>
+    <span class="navbar-brand mx-1 mb-0 font-weight-bold font-italic" style="font-size:1.2em">PA4</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ml-auto">
+                <span class="nav-item mx-0 btn btn-primary"><a class="nav-link text-white" style="font-size:1.2em" href="{% url 'home' %}">Home</a></span>
+                <span class="nav-item mx-0 btn btn-primary"><a class="nav-link text-white" style="font-size:1.2em" href="{% url 'board:index' %}">Board</a></span>
+                <span class="nav-item dropdown mx-1 btn btn-primary" style="float:right">
+                    {% if user.is_active %}
+                    <a class="nav-link dropdown-toggle" style="font-size:1.2em; color: white;"  href="#" data-bs-toggle="dropdown">
+                        <img style="border-radius:5px; -moz-border-radius: 5px;
+                            -khtml-border-radius:5px;
+                            -webkit-border-radius:5px;" src="{{ user.profile.avatar.url }} " width="15" height="15"/>&ensp;{% firstof user.username %}&ensp;{{ user.points }}&ensp;</a>
+                    <div class="dropdown-menu">
+                        <span><a class="dropdown-item" href="{% url 'users-profile' %}">My Page</a></span>
+                        <span><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></span>
+                        <span><a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a></span>
+                    </div>
+                    {% else %}
+                    <a class="nav-link dropdown-toggle text-white" style="font-size:0.7em" href="#" data-bs-toggle="dropdown">
+                        <i class="fas fa-user"></i>&ensp;익명&ensp;</a>
+                    <div class="dropdown-menu">
+                        <span><a class="dropdown-item" href="{% url 'login' %}">Login</a></span>
+                        <span><a class="dropdown-item" href="{% url 'users-register' %}">Register</a></span>
+                    </div>
+                    {% endif %}
+                </span>
             </div>
-            {% else %}
-            <a class="nav-link dropdown-toggle text-white" style="font-size:0.7em" href="#" data-bs-toggle="dropdown">
-                <i class="fas fa-user"></i>&ensp;익명&ensp;</a>
-            <div class="dropdown-menu">
-                <span><a class="dropdown-item" href="{% url 'login' %}">Login</a></span>
-                <span><a class="dropdown-item" href="{% url 'users-register' %}">Register</a></span>
-            </div>
-            {% endif %}
-        </span>
+        </div>
 </nav>
 
 <div class="container">
